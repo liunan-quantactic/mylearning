@@ -23,7 +23,7 @@ exog = df[['A1','A2']].iloc[indices[0:90]]
 # 进行逻辑回归的分析
 #logit或者probit方法
 mod = sm.Logit(endog,exog).fit()
-#mod = sm.Probit(endog,exog).fit()
+#mod = smf.Probit(endog,exog).fit()
 mod.summary()
 # 预测结果
 y_predict = mod.predict(df[['A1','A2']].iloc[indices[90:]])
@@ -33,4 +33,16 @@ result = pd.concat([y_predict,df['class'].iloc[indices[90:]]],axis=1)
 from sklearn import linear_model as lm
 result = lm.LogisticRegression().fit(exog.values,endog.values)
 
+
+'''分位数回归
+解决数据有离群点时的参数显著性问题,按照被解释变量进行分位数排序'''
+'''辅助工具可以用qqplot确定数据是否是正态分布（也可以选择其他分布形式）'''
+import statsmodels.api as sm
+import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+df=sm.datasets.engel.load_pandas().data
+ax=plt.subplot(111)
+sm.qqplot(df['foodexp'],fit=True,line='45')#qqplot
+mod=smf.quantreg('foodexp~income',df).fit(q=0.5)
+mod.summary()
 
