@@ -67,3 +67,31 @@ y_predict = knn.predict(x_test)
 # 预测概率（有几个class就是几列，但排序要注意）
 y_predict_prob=knn.predict_proba(x_test)
 
+
+'''支持向量积SVM'''
+from sklearn import datasets
+import pandas as pd
+import numpy as np
+iris_attr = datasets.load_iris().data
+iris_class = datasets.load_iris().target
+# 设置随机种子，设置后每次调用该模块产生的随机数是一样的，不设置的话会按照系统时间作为参数
+np.random.seed(0)
+# 设置一个样本数据标签
+indices = np.random.permutation(len(iris_attr))
+# 随机选取数据标签中的140个作为训练集
+x_train = iris_attr[indices[:-10]]
+y_train = iris_class[indices[:-10]]
+# 省下10个数据作为测试数据集
+x_test = iris_attr[indices[-10:]]
+y_test = iris_class[indices[-10:]]
+# import 支持向量机函数
+from sklearn.svm import SVC
+'''核函数的分类：
+rbf 高斯径向基核函数
+linear 线性
+poly 多形式核函数
+sigmoid 非线性作用核函数
+'''
+mod = SVC(C=1.0,kernel='rbf')
+mod.fit(x_train,y_train)
+y_predict=mod.predict(x_test)

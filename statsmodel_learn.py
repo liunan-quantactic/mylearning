@@ -53,18 +53,20 @@ mod.summary()
 由于同一个个体在不同时期扰动项之间村来自相关，因此使用聚类稳健标准误，同一个聚类观测值允许存在相关性可以对fit()中的cov_type参数进行修改'''
 
 
-'''朴素贝叶斯 还是二分问题'''
+'''朴素贝叶斯（要求解释变量之间相互独立） 还是二分问题'''
 from sklearn import datasets
 import pandas as pd
 import numpy as np
 iris_attr = datasets.load_iris().data
 iris_class = datasets.load_iris().target
-from sklearn.naive_bayes import GaussianNB,MultinomialNB  #高斯朴素贝叶斯和多项朴素贝叶斯
+from sklearn.naive_bayes import GaussianNB,MultinomialNB  #高斯朴素贝叶斯（适合连续变量）和多项朴素贝叶斯
 '''高斯朴素贝叶斯和多项朴素贝叶斯结果可能不同，取决于选择了哪一种分布函数'''
 gnb = GaussianNB()
 gnb = MultinomialNB()
 y_pred = gnb.fit(iris_attr, iris_class)
 #分类取值的概率
-X=[[6.3,4,6.4,1]]
+X = [[6.3,4,6.4,1]]
 y_pred.predict(X)
 y_pred.predict_proba(X)
+
+
